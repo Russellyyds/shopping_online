@@ -15,5 +15,10 @@
         <module>gulimall-order</module>
         <module>gulimall-product</module>
         <module>gulimall-ware</module>
+<!--        后台管理系统-->
+        <module>renren-fast</module>
+        <module>renren-generator</module>
+        <module>gulimall-common</module>
+
     </modules>
 </project>
