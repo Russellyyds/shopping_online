@@ -1,6 +1,7 @@
 package com.atguigu.gulimall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.atguigu.gulimall.product.service.CategoryService;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.R;
 
+import javax.validation.Valid;
 
 
 /**
@@ -31,15 +33,23 @@ public class CategoryController {
     private CategoryService categoryService;
 
     /**
-     * 列表
+     * 查出所有分類以及子分類,以樹形結構組裝起來列表
      */
-    @RequestMapping("/list")
+    @RequestMapping("/list/tree")
     //@RequiresPermissions("product:category:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = categoryService.queryPage(params);
+       List<CategoryEntity> categoryEntities= categoryService.listWithTree();
 
-        return R.ok().put("page", page);
+
+        return R.ok().put("data", categoryEntities);
     }
+//    @RequestMapping("/list")
+//    //@RequiresPermissions("product:category:list")
+//    public R list(@RequestParam Map<String, Object> params){
+//        PageUtils page = categoryService.queryPage(params);
+//
+//        return R.ok().put("page", page);
+//    }
 
 
     /**
@@ -50,7 +60,7 @@ public class CategoryController {
     public R info(@PathVariable("catId") Long catId){
 		CategoryEntity category = categoryService.getById(catId);
 
-        return R.ok().put("category", category);
+        return R.ok().put("data", category);
     }
 
     /**
@@ -58,12 +68,21 @@ public class CategoryController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:category:save")
-    public R save(@RequestBody CategoryEntity category){
+    public R save(@Valid @RequestBody CategoryEntity category){
 		categoryService.save(category);
 
         return R.ok();
     }
 
+
+    @RequestMapping("/update/sort")
+    //@RequiresPermissions("product:category:update")
+    public R updateSort(@RequestBody CategoryEntity[] category){
+
+        categoryService.updateBatchById(Arrays.asList(category));
+
+        return R.ok();
+    }
     /**
      * 修改
      */
@@ -81,8 +100,9 @@ public class CategoryController {
     @RequestMapping("/delete")
     //@RequiresPermissions("product:category:delete")
     public R delete(@RequestBody Long[] catIds){
-		categoryService.removeByIds(Arrays.asList(catIds));
-
+        //1.检查当前菜单是不是被别的地方引用
+//		categoryService.removeByIds(Arrays.asList(catIds));
+        categoryService.removeMenuByIds(Arrays.asList(catIds));
         return R.ok();
     }
 
