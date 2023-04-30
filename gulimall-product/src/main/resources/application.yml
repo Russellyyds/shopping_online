@@ -13,6 +13,13 @@ spring:
       secret-key: wajAG4R3h1sNKjih5yXi3q3qPmwZHt
       oss:
         endpoint: oss-cn-guangzhou.aliyuncs.com
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+  redis:
+    host: 127.0.0.1
+    port: 6379
 
 
 mybatis-plus:
@@ -28,3 +35,5 @@ server:
 logging:
   level:
     com.atguigu.gulimall: debug
+
+

@@ -6,8 +6,11 @@ import com.atguigu.gulimall.product.service.BrandService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
@@ -15,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,8 +27,26 @@ class GulimallProductApplicationTests {
 
     @Autowired
     BrandService brandService;
-    @Autowired
+//    @Autowired
 //    OSSClient ossClient;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    RedissonClient redissonClient;
+    @Test
+    public void testStringRedisTemplate(){
+        ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
+        ops.set("hello","world"+ UUID.randomUUID().toString());
+        String hello = ops.get("hello");
+        System.out.println(hello);
+    }
+
+    @Test
+    void testRedission(){
+        System.out.println(redissonClient);
+    }
+
     @Test
     void contextLoads() {
 //        BrandEntity brandEntity = new BrandEntity();

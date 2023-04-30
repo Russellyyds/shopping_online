@@ -1,4 +1,4 @@
-package com.atguigu.gulimall.product.controller;
+package com.atguigu.gulimall.product.app;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class SkuInfoController {
     @RequestMapping("/list")
     //@RequiresPermissions("product:skuinfo:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = skuInfoService.queryPage(params);
+        PageUtils page = skuInfoService.queryPageCondition(params);
 
         return R.ok().put("page", page);
     }
